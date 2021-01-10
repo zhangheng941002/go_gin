@@ -1,0 +1,204 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "go gin 框架学习",
+        "title": "GIN 框架学习",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "zh",
+            "url": "http://www.zzhgod.com",
+            "email": "zhangheng9394@163.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/api",
+    "paths": {
+        "/get/all/{urlName}/test": {
+            "get": {
+                "description": "GET ALL",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GET请求测试"
+                ],
+                "summary": "GET请求包好所有获取参数",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "tom",
+                        "description": "人名",
+                        "name": "urlName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            "男",
+                            "女",
+                            "其他"
+                        ],
+                        "type": "string",
+                        "description": "性别",
+                        "name": "gender",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "年龄",
+                        "name": "age",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status\": 1,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResData"
+                        }
+                    },
+                    "500": {
+                        "description": "status\": 0,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResData"
+                        }
+                    }
+                }
+            }
+        },
+        "/post/second": {
+            "post": {
+                "description": "通过声明的 struct 来接收绑定的json数据\n| 项目 | 价格 | 数量 |\n| :-------- | --------:| :--: |\n| iPhone | 6000 元 | 5 |\n| iPad | 3800 元 | 12 |\n| iMac | 10000 元 | 234 |",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GET请求测试"
+                ],
+                "summary": "POST请求struct",
+                "parameters": [
+                    {
+                        "description": "用户注册信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/test.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResData"
+                        }
+                    },
+                    "500": {
+                        "description": "失败",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResData"
+                        }
+                    }
+                }
+            }
+        },
+        "/post/start": {
+            "post": {
+                "description": "post",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GET请求测试"
+                ],
+                "summary": "POST请求",
+                "parameters": [
+                    {
+                        "description": "用户信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/test.UserInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status\": 1,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResData"
+                        }
+                    },
+                    "500": {
+                        "description": "status\": 0,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResData"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.ResData": {
+            "type": "object",
+            "properties": {
+                "msg": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "object"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "test.User": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/test.UserInfo"
+                    }
+                },
+                "password": {
+                    "description": "`json:\"Password\" binding:\"required\"`",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "`json:\"username\" binding:\"required\"`  // 必传校验",
+                    "type": "string"
+                }
+            }
+        },
+        "test.UserInfo": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

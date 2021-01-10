@@ -1,0 +1,142 @@
+basePath: /api
+definitions:
+  models.ResData:
+    properties:
+      msg:
+        type: string
+      result:
+        type: object
+      status:
+        type: integer
+    type: object
+  test.User:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/test.UserInfo'
+        type: array
+      password:
+        description: '`json:"Password" binding:"required"`'
+        type: string
+      username:
+        description: '`json:"username" binding:"required"`  // 必传校验'
+        type: string
+    type: object
+  test.UserInfo:
+    properties:
+      age:
+        type: integer
+      username:
+        type: string
+    type: object
+info:
+  contact:
+    email: zhangheng9394@163.com
+    name: zh
+    url: http://www.zzhgod.com
+  description: go gin 框架学习
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: GIN 框架学习
+  version: "1.0"
+paths:
+  /get/all/{urlName}/test:
+    get:
+      consumes:
+      - application/json
+      description: GET ALL
+      parameters:
+      - default: tom
+        description: 人名
+        in: path
+        name: urlName
+        required: true
+        type: string
+      - description: 性别
+        enum:
+        - 男
+        - 女
+        - 其他
+        in: query
+        name: gender
+        required: true
+        type: string
+      - description: 年龄
+        in: query
+        name: age
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'status": 1,"msg":"success"}'
+          schema:
+            $ref: '#/definitions/models.ResData'
+        "500":
+          description: 'status": 0,"msg":"success"}'
+          schema:
+            $ref: '#/definitions/models.ResData'
+      summary: GET请求包好所有获取参数
+      tags:
+      - GET请求测试
+  /post/second:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        通过声明的 struct 来接收绑定的json数据
+        | 项目 | 价格 | 数量 |
+        | :-------- | --------:| :--: |
+        | iPhone | 6000 元 | 5 |
+        | iPad | 3800 元 | 12 |
+        | iMac | 10000 元 | 234 |
+      parameters:
+      - description: 用户注册信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/test.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/models.ResData'
+        "500":
+          description: 失败
+          schema:
+            $ref: '#/definitions/models.ResData'
+      summary: POST请求struct
+      tags:
+      - GET请求测试
+  /post/start:
+    post:
+      consumes:
+      - application/json
+      description: post
+      parameters:
+      - description: 用户信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/test.UserInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'status": 1,"msg":"success"}'
+          schema:
+            $ref: '#/definitions/models.ResData'
+        "500":
+          description: 'status": 0,"msg":"success"}'
+          schema:
+            $ref: '#/definitions/models.ResData'
+      summary: POST请求
+      tags:
+      - GET请求测试
+swagger: "2.0"

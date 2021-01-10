@@ -16,6 +16,22 @@ import (
 	"time"
 )
 
+// @title GIN 框架学习
+// @version 1.0
+// @description go gin 框架学习
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name zh
+// @contact.url http://www.zzhgod.com
+// @contact.email zhangheng9394@163.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @BasePath /api
+
+
+
 func main() {
 
 	//// 方法一

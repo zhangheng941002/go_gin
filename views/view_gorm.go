@@ -55,8 +55,23 @@ func GetPerson(c *gin.Context) {
 	var person []models.Person
 	//if err := db.Where("id = ?", id).First(&person).Error; err != nil {
 	//if err := db.Where("first_name = ?", id).First(&person).Error; err != nil {
-	if err := utils.Config.DbRouter.Where("first_name = ?", id).Find(&person).Error; err != nil {
+	if err := utils.Config.DbRouter.Where("id = ?", id).Find(&person).Error; err != nil {
 		c.AbortWithStatus(404)
+		fmt.Println(err)
+	} else {
+		c.JSON(200, person)
+	}
+}
+
+// 模糊查询
+func GetPersonByName(c *gin.Context) {
+	_name := c.Query("name")
+	fmt.Println("------------------", _name)
+	queryName := "%"+ _name + "%"
+	var person []models.Person
+
+	if err := utils.Config.DbRouter.Where("first_name like ?", queryName).Find(&person).Error; err != nil {
+		c.AbortWithStatus(500)
 		fmt.Println(err)
 	} else {
 		c.JSON(200, person)

@@ -10,8 +10,11 @@ package views
 
 import (
 	"fmt"
+	_ "gin_web/docs"
 	"gin_web/middleware"
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"net/url"
 )
 
@@ -73,6 +76,9 @@ func Router() *gin.Engine {
 
 	router.Use(middleware.LogMiddleWare())
 	router.Use(middleware.Cors()) // 解决跨越问题
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	apiGroup := router.Group("/api/", middleware.TokenMiddleWare())
 	apiGroup.GET("/middle", Middle)
 
@@ -99,22 +105,36 @@ func Router() *gin.Engine {
 		post.POST("second", PostSecond)
 	}
 
-
 	gorms := api.Group("/gorms")
 
 	{
 		gorms.GET("/people/", GetPeople)
-		gorms.GET("/people/:id", GetPerson)
+		gorms.GET("/people/:id", GetPerson)        // 通过id精确查询
+		gorms.GET("/get/people/", GetPersonByName) // 通过名字模糊查询
 		gorms.POST("/people", CreatePerson)
 		gorms.PUT("/people/:id", UpdatePerson)
 		gorms.DELETE("/people/:id", DeletePerson)
+	}
+
+
+	// 加载静态模版
+	router.LoadHTMLGlob("templates/*")
+	// 渲染引擎模板
+	tem := api.Group("tem")
+	{
+		tem.GET("/index", TemIndex)
 	}
 
 	// 加载静态资源，路由通过 /static 开始匹配，后面的事文件的路径
 	router.Static("/static", "./static")
 
 	// 单个路由指向特定的静态资源
-	router.StaticFile("/index", "./static/image/1.jpg")
+	router.StaticFile("/index/img", "./static/image/1.jpg")
+
+	// 网站图标
+	router.StaticFile("/favicon.ico", "./static/image/favicon.ico")
+
+
 
 	return router
 }
